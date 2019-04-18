@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
+    const STATUS_DELETED = 'deleted';
+    const STATUS_ACTIVE = 'active';
 
     /**
      * The attributes that are mass assignable.
@@ -36,4 +38,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return static::where(['auth_token' => $token])->first();
+    }
+
+    public function isEmailActive()
+    {
+        return $this->status == self::STATUS_ACTIVE ? true : false;
+    }
 }

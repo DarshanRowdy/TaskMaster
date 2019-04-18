@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UnitsRequest;
 use App\Units;
 
-class UnitsController extends Controller
+class UnitsController extends BaseApiController
 {
     public function index()
     {
+        $this->_checkAuth();
         $units = Units::latest()->get();
 
+        $response = ['units' => $units];
+        $this->_sendResponse($response, 'units listing Success');
+//        $this->_sendErrorResponse(400);
         return response()->json($units);
     }
 
