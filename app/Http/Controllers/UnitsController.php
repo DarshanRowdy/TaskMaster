@@ -4,46 +4,69 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UnitsRequest;
 use App\Units;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class UnitsController extends BaseApiController
 {
     public function index()
     {
         $this->_checkAuth();
-        $units = Units::latest()->get();
-
-        $response = ['units' => $units];
-        $this->_sendResponse($response, 'units listing Success');
-//        $this->_sendErrorResponse(400);
-        return response()->json($units);
+        try{
+            $units = Units::latest()->get();
+            $response = ['units' => $units];
+            $this->_sendResponse($response, 'units listing Success');
+        } catch (\Exception $exception){
+            $this->_sendErrorResponse(404);
+        }
     }
 
     public function store(UnitsRequest $request)
     {
-        $units = Units::create($request->all());
-
-        return response()->json($units, 201);
+        $this->_checkAuth();
+        try{
+            $units = Units::create($request->all());
+            $response = ['units' => $units];
+            $this->_sendResponse($response, 'units created success', 201);
+        } catch (\Exception $exception){
+            $this->_sendErrorResponse(400);
+        }
     }
 
     public function show($id)
     {
-        $units = Units::findOrFail($id);
-
-        return response()->json($units);
+        $this->_checkAuth();
+        try{
+            $units = Units::findOrFail($id);
+            $response = ['units' => $units];
+            $this->_sendResponse($response, 'units found success', 200);
+        } catch (\Exception $exception){
+            $this->_sendErrorResponse(400);
+        }
     }
 
-    public function update(UnitsRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $units = Units::findOrFail($id);
-        $units->update($request->all());
-
-        return response()->json($units, 200);
+        $this->_checkAuth();
+        try{
+            $units = Units::findOrFail($id);
+            $units->update($request->all());
+            $response = ['units' => $units];
+            $this->_sendResponse($response, 'units update success', 200);
+        } catch (\Exception $exception){
+            $this->_sendErrorResponse(400);
+        }
     }
 
     public function destroy($id)
     {
-        Units::destroy($id);
-
-        return response()->json(null, 204);
+        $this->_checkAuth();
+        try{
+            $units = Units::destroy($id);
+            $response = ['units' => $units];
+            $this->_sendResponse($response, 'unit delete successfully', 200);
+        } catch (\Exception $exception){
+            $this->_sendErrorResponse(204);
+        }
     }
 }

@@ -7,4 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Units extends Model
 {
     protected $guarded = ['id'];
+    protected $fillable = ['name'];
 }
