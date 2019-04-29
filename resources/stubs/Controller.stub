@@ -5,41 +5,66 @@ namespace App\Http\Controllers;
 use App\Http\Requests\{{modelName}}Request;
 use App\{{modelName}};
 
-class {{modelName}}Controller extends Controller
+class {{modelName}}Controller extends BaseApiController
 {
     public function index()
     {
-        ${{modelNamePluralLowerCase}} = {{modelName}}::latest()->get();
-
-        return response()->json(${{modelNamePluralLowerCase}});
+        $this->_checkAuth();
+        try{
+            ${{modelNamePluralLowerCase}} = {{modelName}}::latest()->get();
+        } catch (\Exception $exception){
+            $this->_sendErrorResponse(404);
+        }
+        $response = ['{{modelNamePluralLowerCase}}' => ${{modelNamePluralLowerCase}}];
+        $this->_sendResponse($response, '{{modelNamePluralLowerCase}} listing Success');
     }
 
     public function store({{modelName}}Request $request)
     {
-        ${{modelNameSingularLowerCase}} = {{modelName}}::create($request->all());
-
-        return response()->json(${{modelNameSingularLowerCase}}, 201);
+        $this->_checkAuth();
+        try{
+            ${{modelNameSingularLowerCase}} = {{modelName}}::create($request->all());
+        } catch (\Exception $exception){
+            $this->_sendErrorResponse(400);
+        }
+        $response = ['{{modelNamePluralLowerCase}}' => ${{modelNamePluralLowerCase}}];
+        $this->_sendResponse($response, '{{modelNamePluralLowerCase}} created success');
     }
 
     public function show($id)
     {
-        ${{modelNameSingularLowerCase}} = {{modelName}}::findOrFail($id);
-
-        return response()->json(${{modelNameSingularLowerCase}});
+        $this->_checkAuth();
+        try{
+            ${{modelNameSingularLowerCase}} = {{modelName}}::findOrFail($id);
+        } catch (\Exception $exception){
+            $this->_sendErrorResponse(400);
+        }
+        $response = ['{{modelNamePluralLowerCase}}' => ${{modelNamePluralLowerCase}}];
+        $this->_sendResponse($response, '{{modelNamePluralLowerCase}} found success');
     }
 
     public function update({{modelName}}Request $request, $id)
     {
-        ${{modelNameSingularLowerCase}} = {{modelName}}::findOrFail($id);
-        ${{modelNameSingularLowerCase}}->update($request->all());
-
-        return response()->json(${{modelNameSingularLowerCase}}, 200);
+        $this->_checkAuth();
+        try{
+            ${{modelNameSingularLowerCase}} = {{modelName}}::findOrFail($id);
+            ${{modelNameSingularLowerCase}}->update($request->all());
+        } catch (\Exception $exception){
+            $this->_sendErrorResponse(400);
+        }
+        $response = ['{{modelNameSingularLowerCase}}' => ${{modelNameSingularLowerCase}}];
+        $this->_sendResponse($response, '{{modelNameSingularLowerCase}} update success');
     }
 
     public function destroy($id)
     {
-        {{modelName}}::destroy($id);
-
-        return response()->json(null, 204);
+        $this->_checkAuth();
+        try{
+            $units = {{modelName}}::destroy($id);
+        } catch (\Exception $exception){
+            $this->_sendErrorResponse(204);
+        }
+        $response = ['{{modelNameSingularLowerCase}}' => ${{modelNameSingularLowerCase}}];
+        $this->_sendResponse($response, '{{modelNameSingularLowerCase}} delete successfully');
     }
 }

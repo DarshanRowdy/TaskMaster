@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UnitsRequest;
 use App\Units;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 
 class UnitsController extends BaseApiController
 {
@@ -14,11 +12,11 @@ class UnitsController extends BaseApiController
         $this->_checkAuth();
         try{
             $units = Units::latest()->get();
-            $response = ['units' => $units];
-            $this->_sendResponse($response, 'units listing Success');
         } catch (\Exception $exception){
             $this->_sendErrorResponse(404);
         }
+        $response = ['units' => $units];
+        $this->_sendResponse($response, 'units listing Success');
     }
 
     public function store(UnitsRequest $request)
@@ -26,11 +24,11 @@ class UnitsController extends BaseApiController
         $this->_checkAuth();
         try{
             $units = Units::create($request->all());
-            $response = ['units' => $units];
-            $this->_sendResponse($response, 'units created success', 201);
         } catch (\Exception $exception){
             $this->_sendErrorResponse(400);
         }
+        $response = ['units' => $units];
+        $this->_sendResponse($response, 'units created success');
     }
 
     public function show($id)
@@ -38,24 +36,24 @@ class UnitsController extends BaseApiController
         $this->_checkAuth();
         try{
             $units = Units::findOrFail($id);
-            $response = ['units' => $units];
-            $this->_sendResponse($response, 'units found success', 200);
         } catch (\Exception $exception){
             $this->_sendErrorResponse(400);
         }
+        $response = ['units' => $units];
+        $this->_sendResponse($response, 'units found success');
     }
 
-    public function update(Request $request, $id)
+    public function update(UnitsRequest $request, $id)
     {
         $this->_checkAuth();
         try{
             $units = Units::findOrFail($id);
             $units->update($request->all());
-            $response = ['units' => $units];
-            $this->_sendResponse($response, 'units update success', 200);
         } catch (\Exception $exception){
             $this->_sendErrorResponse(400);
         }
+        $response = ['units' => $units];
+        $this->_sendResponse($response, 'units update success');
     }
 
     public function destroy($id)
@@ -63,10 +61,10 @@ class UnitsController extends BaseApiController
         $this->_checkAuth();
         try{
             $units = Units::destroy($id);
-            $response = ['units' => $units];
-            $this->_sendResponse($response, 'unit delete successfully', 200);
         } catch (\Exception $exception){
             $this->_sendErrorResponse(204);
         }
+        $response = ['units' => $units];
+        $this->_sendResponse($response, 'unit delete successfully');
     }
 }
