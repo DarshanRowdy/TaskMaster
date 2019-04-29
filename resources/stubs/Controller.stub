@@ -60,7 +60,7 @@ class {{modelName}}Controller extends BaseApiController
     {
         $this->_checkAuth();
         try{
-            $units = {{modelName}}::destroy($id);
+            ${{modelNameSingularLowerCase}} = {{modelName}}::destroy($id);
         } catch (\Exception $exception){
             $this->_sendErrorResponse(204);
         }
