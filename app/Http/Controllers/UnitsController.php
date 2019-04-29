@@ -7,15 +7,23 @@ use App\Units;
 
 class UnitsController extends BaseApiController
 {
-    public function index()
+    public function index(UnitsRequest $request)
     {
         $this->_checkAuth();
+        $offset = isset($request->offset) ? $request->offset : config('app.default_offset');
+        $limit = isset($request->limit) ? $request->limit : config('app.default_limit');
         try{
-            $units = Units::latest()->get();
+            $units = Units::latest();
+            $units->skip($offset);
+            $units->take($limit);
+            $arrUnits = $units->get();
         } catch (\Exception $exception){
             $this->_sendErrorResponse(404);
         }
-        $response = ['units' => $units];
+        $p['offset'] = $offset;
+        $p['limit'] = $limit;
+        $p['record_sent'] = count($arrUnits);
+        $response = ['units' => $arrUnits, 'pagination' => $p];
         $this->_sendResponse($response, 'units listing Success');
     }
 

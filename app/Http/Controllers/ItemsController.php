@@ -7,15 +7,23 @@ use App\Items;
 
 class ItemsController extends BaseApiController
 {
-    public function index()
+    public function index(ItemsRequest $request)
     {
         $this->_checkAuth();
+        $offset = isset($request->offset) ? $request->offset : config('app.default_offset');
+        $limit = isset($request->limit) ? $request->limit : config('app.default_limit');
         try{
-            $items = Items::latest()->get();
+            $items = Items::latest();
+            $items->skip($offset);
+            $items->take($limit);
+            $arrItems = $items->get();
         } catch (\Exception $exception){
             $this->_sendErrorResponse(404);
         }
-        $response = ['items' => $items];
+        $p['offset'] = $offset;
+        $p['limit'] = $limit;
+        $p['record_sent'] = count($arrItems);
+        $response = ['items' => $arrItems, 'pagination' => $p];
         $this->_sendResponse($response, 'items listing Success');
     }
 

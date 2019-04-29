@@ -123,6 +123,9 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'default_offset' => env('DEFAULT_OFFSET', 0),
+    'default_limit' => env('DEFAULT_LIMIT', 20),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
