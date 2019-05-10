@@ -23,8 +23,7 @@ class {{modelName}}Controller extends BaseApiController
         $p['offset'] = $offset;
         $p['limit'] = $limit;
         $p['record_sent'] = count($arr{{modelName}});
-        $response = ['units' => $arr{{modelName}}, 'pagination' => $p];
-        $response = ['{{modelNamePluralLowerCase}}' => ${{modelNamePluralLowerCase}}];
+        $response = ['{{modelNamePluralLowerCase}}' => $arr{{modelName}}, 'pagination' => $p];
         $this->_sendResponse($response, '{{modelNamePluralLowerCase}} listing Success');
     }
 
@@ -36,8 +35,8 @@ class {{modelName}}Controller extends BaseApiController
         } catch (\Exception $exception){
             $this->_sendErrorResponse(400);
         }
-        $response = ['{{modelNamePluralLowerCase}}' => ${{modelNamePluralLowerCase}}];
-        $this->_sendResponse($response, '{{modelNamePluralLowerCase}} created success');
+        $response = ['{{modelNameSingularLowerCase}}' => ${{modelNameSingularLowerCase}}];
+        $this->_sendResponse($response, '{{modelNameSingularLowerCase}} created success');
     }
 
     public function show($id)
@@ -48,8 +47,8 @@ class {{modelName}}Controller extends BaseApiController
         } catch (\Exception $exception){
             $this->_sendErrorResponse(400);
         }
-        $response = ['{{modelNamePluralLowerCase}}' => ${{modelNamePluralLowerCase}}];
-        $this->_sendResponse($response, '{{modelNamePluralLowerCase}} found success');
+        $response = ['{{modelNameSingularLowerCase}}' => ${{modelNameSingularLowerCase}}];
+        $this->_sendResponse($response, '{{modelNameSingularLowerCase}} found success');
     }
 
     public function update({{modelName}}Request $request, $id)

@@ -43,9 +43,4 @@ class User extends Authenticatable
     {
         return static::where(['auth_token' => $token])->first();
     }
-
-    public function isEmailActive()
-    {
-        return $this->status == self::STATUS_ACTIVE ? true : false;
-    }
 }

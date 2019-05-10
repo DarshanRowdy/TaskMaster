@@ -64,7 +64,9 @@ class CrudGenerator extends Command
             $this->getStub('Controller')
         );
 
-        file_put_contents(app_path("/Http/Controllers/{$name}Controller.php"), $controllerTemplate);
+        if(!file_exists($path = app_path('/Http/Controllers/Api')))
+            mkdir($path, 0777, true);
+        file_put_contents(app_path("/Http/Controllers/Api/{$name}Controller.php"), $controllerTemplate);
     }
     protected function request($name)
     {
