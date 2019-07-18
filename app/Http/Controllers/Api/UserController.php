@@ -75,4 +75,8 @@ class UserController extends BaseApiController
         $response = ['user' => $user];
         $this->_sendResponse($response, 'user delete successfully');
     }
+
+    public function dashboard($id){
+        dd('Hello There '.$id);
+    }
 }
