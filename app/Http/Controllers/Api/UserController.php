@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\User;
+use DevDr\ApiCrudGenerator\Controllers\BaseApiController;
 
 class UserController extends BaseApiController
 {
     public function index(UserRequest $request)
     {
-        $this->_checkAuth();
+//        $this->_checkAuth();
+        $users = $request->get('users');
         $offset = isset($request->offset) ? $request->offset : config('app.default_offset');
         $limit = isset($request->limit) ? $request->limit : config('app.default_limit');
         try{

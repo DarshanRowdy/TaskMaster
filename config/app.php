@@ -164,7 +164,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+        DevDr\ApiCrudGenerator\DrCrudServiceProvider::class,
         /*
          * Package Service Providers...
          */

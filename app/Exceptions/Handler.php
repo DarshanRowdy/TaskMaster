@@ -4,6 +4,9 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Psy\Util\Json;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -32,6 +35,19 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return void
      */
+
+    public function _errorMessage($responseCode = 400, $message = 'Bad Request'){
+        $body = Json::encode(
+            array(
+                "success" => false,
+                "responseCode" => $responseCode,
+                'message' => $message
+            )
+        );
+        echo $body;
+        die;
+    }
+
     public function report(Exception $exception)
     {
         parent::report($exception);
@@ -46,6 +62,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if($exception instanceof NotFoundHttpException){
+            $this->_errorMessage(404,'Page Not Found');
+        }
+
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            $this->_errorMessage(405,'Method is not allowed for the requested route');
+        }
+
         return parent::render($request, $exception);
     }
 }
